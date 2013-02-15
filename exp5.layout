@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="dict.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="5672" topLine="132" />
+	</File>
+	<File name="dict.h" open="1" top="0" tabpos="1">
+		<Cursor position="1023" topLine="20" />
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="5988" topLine="242" />
+	</File>
+	<File name="storage.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="15636" topLine="509" />
+	</File>
+	<File name="storage.h" open="1" top="0" tabpos="6">
+		<Cursor position="1507" topLine="66" />
+	</File>
+	<File name="table.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="2221" topLine="81" />
+	</File>
+</CodeBlocks_layout_file>

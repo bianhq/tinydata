@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1356153121 source:/media/BHQ/course/db/prog/exp5/exp5/dict.cpp
+	"dict.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1356152629 /media/BHQ/course/db/prog/exp5/exp5/dict.h
+	"util.h"
+	<stdio.h>
+
+1355651847 /media/BHQ/course/db/prog/exp5/exp5/util.h
+
+1355744411 source:/media/BHQ/course/db/prog/exp5/exp5/main.cpp
+	<iostream>
+	"table.h"
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	"storage.h"
+	"dict.h"
+
+1355739025 /media/BHQ/course/db/prog/exp5/exp5/table.h
+	<stdio.h>
+	"util.h"
+	"storage.h"
+	"dict.h"
+
+1356147453 /media/BHQ/course/db/prog/exp5/exp5/storage.h
+	"util.h"
+	<stdio.h>
+
+1356151548 source:/media/BHQ/course/db/prog/exp5/exp5/storage.cpp
+	"storage.h"
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+
+1355745157 source:/media/BHQ/course/db/prog/exp5/exp5/table.cpp
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1355639265 source:/media/BHQ/course/db/prog/exp5/exp5/util.cpp
+
