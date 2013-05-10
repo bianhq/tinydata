@@ -1,0 +1,68 @@
+所有的关键词均可以是大写或者小写，但不能在一个关键词中大小写混合，每个完整的SQL语句之后都要以;结尾
+
+1、Show tables
+语法格式如下：
+SHOW TABLES;
+可以列出当前已经存在的表
+
+2、Create table
+语法格式如下：
+CREATE TABLE 表名称
+(
+列名称1 数据类型 [PRIMARY KEY] [UNIQUE/DISTINCT],
+列名称2 数据类型 [ALL/UNIQUE/DISTINCT],
+列名称3 数据类型 [ALL/UNIQUE/DISTINCT],
+....
+);
+每个表中可以将某一列声明为主键，声明为主键的列默认为UNIQUE/DISTINCT
+其他的列可以是ALL/UNIQUE/DISTINCT，默认为ALL
+数据类型可以是INT、CHAR、DATA，INT和CHAR可以后接括号，指定位数/字符数，如CHAR(10)表示长度为10个字符的字符串
+
+3、Drop table
+语法格式如下：
+DROP TABLE 表名称;
+将整张表删除
+
+4、Create index
+语法格式如下：
+CREATE [HASH/BPT/ALL] INDEX ON 表名称 (列名称);
+在指定的表的列上创建一个索引，索引的类型可以是HASH(哈希)或者BPT(B+树)，缺省为BPT索引
+
+5、Drop index
+语法格式如下：
+CREATE [HASH/BPT/ALL] INDEX ON 表名称 (列名称);
+删除指定的表的列上的索引，索引的类型可以是HASH(哈希)或者BPT(B+树)，缺省为BPT索引
+
+6、Select
+语法格式如下：
+SELECT [UNIQUE] <列名列表>
+FROM <表名列表>
+WHERE <条件列表>
+ORDER BY <列名列表>;
+如果有UNIQUE关键词，则需要对最终的结果进行去重
+<列名列表>中不支持聚集函数，只能是'列名称'或者'表名称.列名称'
+<条件列表>中可以有多个条件，但这些条件都是AND关系，不支持OR
+
+7、Insert
+语法格式如下：
+INSERT INTO 表名称 VALUES (值1, 值2,....);
+或者
+INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....);
+不支持一条insert插入多条元组
+
+8、Delete
+语法格式如下：
+DELETE FROM 表名称 WHERE 条件列表;
+
+9、Load data
+语法格式如下：
+LOAD DATA FROM 文件名 INTO TABLE 表名称 ';'
+文件名指向的文件必须是CSV格式
+
+10、系统命令
+HELP
+获取系统帮助信息
+EXIT
+退出系统
+
+

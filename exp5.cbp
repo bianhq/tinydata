@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="&lt; test/test.sql" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -34,13 +35,22 @@
 		</Compiler>
 		<Unit filename="dict.cpp" />
 		<Unit filename="dict.h" />
+		<Unit filename="lex.yy.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="pool.cpp" />
+		<Unit filename="pool.h" />
+		<Unit filename="spj.cpp" />
+		<Unit filename="spj.h" />
+		<Unit filename="sqlexe.cpp" />
+		<Unit filename="sqlexe.h" />
 		<Unit filename="storage.cpp" />
 		<Unit filename="storage.h" />
 		<Unit filename="table.cpp" />
 		<Unit filename="table.h" />
 		<Unit filename="util.cpp" />
 		<Unit filename="util.h" />
+		<Unit filename="y.tab.cpp" />
+		<Unit filename="y.tab.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -119,8 +119,7 @@ private:
     Frame TmpFrame;
     uint RecSize;
     Storage StorageManager;
-    bool BPTInited;
-    bool HashInited;
+
     uint TabScanPageId;
     uint TabScanRecId;
 
@@ -133,7 +132,7 @@ private:
     //参数分别为要插入的溢出块地址，要插入的键值，要插入的地址，返回值为OFB地址
     void InsertToOFB(OFBlock *block, Addr recAddr);
     //返回值为负表示删除失败
-    int DeleteOFB(Addr ofbAddr);
+    int DeleteOFB(Addr ofbAddr, bool freeData);
     void SeekFrmOFB(Addr ofbAddr, ResultSet* recList);
 
     Addr Alloc(uint segId, uint length, bool useBuf=true);
@@ -182,16 +181,30 @@ private:
     void DoInsert(Key key, Addr addr, Addr entry, Hash_Bucket *bucket);
 
 public:
+    bool BPTInited;
+    bool HashInited;
     BufferedTable(TableInfo *tinfo);
+
     ~BufferedTable();
+
     void Close();
+
     void Open(bool create=false);
+
+    uint64 GetDataBlockNum();
+
+    Addr AllocRec();
+
+    void WriteRec(char *rec, Addr addr);
+
+    void FreeRec(Addr addr);
+
     //bptree
     void BPT_Init(bool create=false);
     //插入记录
-    bool BPT_Insert(Record *rec);
+    bool BPT_Insert(Key key, Addr addr, bool unique);
     //删除记录
-    int BPT_Delete(Key key);
+    int BPT_Delete(Key key, bool freeData);
     //查找记录
     ResultSet *BPT_Seek(Key key, ResultSet *recList);
     //显示索引
@@ -201,11 +214,11 @@ public:
     //初始化哈希索引
     void Hash_Init(bool create=false);
     //插入
-    bool Hash_Insert(Record *rec);
+    bool Hash_Insert(Key key, Addr addr, bool unique);
     //查询
     ResultSet *Hash_Seek(Key key, ResultSet *recList);
     //删除
-    int Hash_Delete(Key key);
+    int Hash_Delete(Key key, bool freeData);
 
     //table scan
     //init for table scan

@@ -8,17 +8,6 @@
 #include "util.h"
 #include <stdio.h>
 
-#define MAX_T_NAME 64
-#define MAX_F_NAME 64
-
-enum FieldType
-{
-    INT,
-    STR,
-    CHAR,
-    FLOAT
-};
-
 struct TableDictItem
 {
     uint TID;
@@ -26,6 +15,9 @@ struct TableDictItem
     char MetaPath[MAX_PATH_LEN];
     char DataPath[MAX_PATH_LEN];
     uint FieldNum;
+    uint64 TupleNum;
+    uint64 BlockNum;
+    bool Valid;
 };
 
 struct FieldDictItem
@@ -36,8 +28,9 @@ struct FieldDictItem
     bool IsUnique;
     bool BuildHashIndex;
     bool BuildBPTIndex;
+    bool Valid;
     FieldType Type;
-    uint Length;
+    uint Size;
 };
 
 struct FieldInfo
@@ -48,10 +41,10 @@ struct FieldInfo
     bool BuildHashIndex;
     bool BuildBPTIndex;
     FieldType Type;
-    uint Length;
+    uint Size;
     FieldInfo();
-    FieldInfo(char fname[], bool isPrimKey, bool isUniq, bool buildHash, bool buildBpt, FieldType type, uint len);
-    void SetInfo(char fname[], bool isPrimKey, bool isUniq, bool buildHash, bool buildBpt, FieldType type, uint len);
+    FieldInfo(char fname[], bool isPrimKey, bool isUniq, bool buildHash, bool buildBpt, FieldType type, uint size);
+    void SetInfo(char fname[], bool isPrimKey, bool isUniq, bool buildHash, bool buildBpt, FieldType type, uint size);
 };
 
 struct TableInfo
@@ -61,6 +54,8 @@ struct TableInfo
     char DataPath[MAX_PATH_LEN];
     FieldInfo *Fields;
     uint FieldNum;
+    uint64 TupleNum;
+    uint64 BlockNum;
     TableInfo();
     TableInfo(char tname[], char dpath[], char mpath[], uint fnum, FieldInfo *fields);
     ~TableInfo();
@@ -69,7 +64,9 @@ struct TableInfo
 class Dictionary
 {
 private:
+    uint ShowTabIndex;
     uint TableNum, FieldNum;
+    uint TabDicLen, FieDicLen;
     Addr TabDicAddr, FieDicAddr;
     bool M;
     TableDictItem *TableDict;
@@ -81,10 +78,16 @@ public:
     ~Dictionary();
     void Open();
     void Close();
+    void Flush();
     void Create();
-    void GetTableInfo(char *tableName, TableInfo* tableInfo);
+    void InitShowTable();
+    char *GetNextTabName();
+    bool GetTableInfo(char *tableName, TableInfo* tableInfo);
     bool AddTable(TableInfo* tableInfo);
     bool DelTable(char *tableName);
+    bool TableExist(char *tableName);
+    bool UpdateStatis(char *tableName, uint64 tupleNum, uint64 blockNum);
+    int UpdateIndex(char *tableName, char *fieldName, bool bpt, bool hash, char type);
 };
 
 #endif // DICT_H_INCLUDED

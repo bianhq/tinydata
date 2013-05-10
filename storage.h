@@ -88,6 +88,7 @@ private:
     FILE *Data, *Meta;// = NULL = NULL
     char MetaPath[MAX_PATH_LEN];
     char DataPath[MAX_PATH_LEN];
+    uint64 DataPageNum;
 
     Addr FM_AllocPage(uint segId);
     int FM_FreePage(Addr pageEnt);
@@ -115,6 +116,7 @@ public:
     int Write(Addr pageEnt, const void *buf, uint length);
     void PageToFrame(byte *filePage, Frame *frame);
     void FrameToPage(Frame *frame, byte *filePage);
+    uint64 GetDataPageNum();
     void Create();
     void Init();
     void Flush();

@@ -1,0 +1,62 @@
+Copyright (C) 2012-2013, School of Information, Renmin University of China.
+All rights reserved.
+E-mail: bianhaoqiong@gmail.com
+
+Notice:
+All keywords could be written in upper or lower case, but do not mix upper or lower cases in one keyword.
+Every SQL statement would end by the ascii character ';'.
+
+Manual:
+
+[1. How to show tables?]
+SHOW TABLES;
+Show all tables' name in the database.
+
+[2. How to create table?]
+CREATE TABLE table_name
+(
+column_name1 data_type [PRIMARY KEY] [UNIQUE/DISTINCT],
+column_name2 data_type [ALL/UNIQUE/DISTINCT],
+column_name3 data_type [ALL/UNIQUE/DISTINCT],
+....
+);
+data_type could be INT, CHAR or DATA. INT or CHAR could followed by "()" to assign bits for bytes, e.g. CHAR(10) means string of 10 characters(bytes) long.
+
+[3. How to drop table?]
+DROP TABLE table_name;
+drop the table of the table_name.
+
+[4. How to create index?]
+CREATE [HASH/BPT/ALL] INDEX ON table_name (column_name);
+By default, the index type is BPT.
+
+[5. How to drop index?]
+Drop [HASH/BPT/ALL] INDEX ON table_name (column_name);
+By default, the index type is BPT.
+
+[6. How to select from where?]
+SELECT [UNIQUE] <column_name list>
+FROM <table_name list>
+WHERE <condition list>
+ORDER BY <column_name list>;
+<column_name list> could not have aggregation function, column_name or table_name.column_name is OK.
+
+[7. How to insert?]
+INSERT INTO table_name VALUES (value1, value2,....);
+or
+INSERT INTO table_name (column_name1, column_name12,...) VALUES (value1, value2,....);
+
+[8. How to delete?]
+DELETE FROM table_name WHERE <condition list>;
+
+[9. How to load data?]
+LOAD DATA FROM file_name INTO TABLE table_name;
+file_name should be the name of a csv file.
+
+[10. System commonds]
+HELP
+get help information.
+EXIT
+exit tiny data.
+
+

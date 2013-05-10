@@ -13,6 +13,7 @@ Storage::Storage(char *dataPath, char *metaPath)
     this->Data = NULL;
     this->Meta = NULL;
     this->p = 0;
+    this->DataPageNum = 0;
     memset(this->index, 0, sizeof(this->index));
 }
 
@@ -148,10 +149,10 @@ int Storage::HitBuffer(Addr addr)
 void Storage::PageToFrame(byte *filePage, Frame *frame)
 {
     memcpy(frame->FilePage, filePage, PAGE_SIZE);
-    memcpy(&frame->UsedBytes, filePage, sizeof(ushort));
-    memcpy(&frame->USNum, filePage+sizeof(ushort), sizeof(ushort));
+    memcpy(&(frame->UsedBytes), filePage, sizeof(ushort));
+    memcpy(&(frame->USNum), filePage+sizeof(ushort), sizeof(ushort));
     uint i;
-    for (i = 0; i < MAX_US_NUM; ++i)
+    for (i = 0; i < frame->USNum; ++i)
     {
         memcpy(&frame->USTable[i], filePage+2*sizeof(ushort)+i*sizeof(UsedSpace), sizeof(UsedSpace));
     }
@@ -163,7 +164,7 @@ void Storage::FrameToPage(Frame *frame, byte *filePage)
     memcpy(filePage, &frame->UsedBytes, sizeof(ushort));
     memcpy(filePage+sizeof(ushort), &frame->USNum, sizeof(ushort));
     uint i;
-    for (i = 0; i < MAX_US_NUM; ++i)
+    for (i = 0; i < frame->USNum; ++i)
     {
         memcpy(filePage+2*sizeof(ushort)+i*sizeof(UsedSpace), &frame->USTable[i], sizeof(UsedSpace));
     }
@@ -475,6 +476,8 @@ Addr Storage::FM_AllocPage(uint segId)
     tmpAddr = segId;
     tmpAddr <<= 32;
     tmpAddr += (i<<12);
+    if (segId == 0)
+        this->DataPageNum++;
     return tmpAddr;
 }
 
@@ -484,8 +487,16 @@ int Storage::FM_FreePage(Addr pageEnt)
     {
         return -1;
     }
-    SegPage[FM_GetSegId(pageEnt)].PageTable[FM_GetPageId(pageEnt)].Used = false;
+    uint segId = FM_GetSegId(pageEnt);
+    SegPage[segId].PageTable[FM_GetPageId(pageEnt)].Used = false;
+    if (segId == 0)
+        this->DataPageNum--;
     return 0;
+}
+
+uint64 Storage::GetDataPageNum()
+{
+    return this->DataPageNum;
 }
 
 int Storage::FM_ReadPage(Addr pageEnt, void *buf)
@@ -518,8 +529,9 @@ void Storage::FM_FlushSegPage()
 {
     CloseFileStream();
     OpenFileStream();
-    WriteToFile('m', META_HEAD_SIZE, SegPage, sizeof(SegPage));
-    uint i, pos = META_HEAD_SIZE + sizeof(SegPage);
+    WriteToFile('m', META_HEAD_SIZE, &DataPageNum, sizeof(DataPageNum));
+    WriteToFile('m', META_HEAD_SIZE+sizeof(DataPageNum), SegPage, sizeof(SegPage));
+    uint i, pos = META_HEAD_SIZE + sizeof(DataPageNum) + sizeof(SegPage);
     for (i = 0; i < SEG_NUM; ++i)
     {
         WriteToFile('m', pos, SegPage[i].PageTable, sizeof(PageTabItem)*SegPage[i].PageTableLength);
@@ -561,8 +573,9 @@ void Storage::FM_LoadSegPage()
             delete []SegPage[i].PageTable;
         }
     }
-    ReadFrmFile('m', META_HEAD_SIZE, SegPage, sizeof(SegPage));
-    uint pos = META_HEAD_SIZE + sizeof(SegPage);
+    ReadFrmFile('m', META_HEAD_SIZE, &DataPageNum, sizeof(DataPageNum));
+    ReadFrmFile('m', META_HEAD_SIZE+sizeof(DataPageNum), SegPage, sizeof(SegPage));
+    uint pos = META_HEAD_SIZE + sizeof(DataPageNum) + sizeof(SegPage);
     for (i = 0; i < SEG_NUM; ++i)
     {
         SegPage[i].Used = true;

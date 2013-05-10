@@ -53,7 +53,7 @@ uint GetRecordSize(TableInfo *tinfo)
     uint size = 0, i, num = tinfo->FieldNum;
     for (i = 0; i < num; ++i)
     {
-        size += tinfo->Fields[i].Length;
+        size += tinfo->Fields[i].Size;
     }
     return size;
 }
@@ -553,7 +553,7 @@ void BufferedTable::deleteFromNode(Key key)
 /**
 删除记录
 */
-int BufferedTable::BPT_Delete(Key key)
+int BufferedTable::BPT_Delete(Key key, bool freeData)
 {
     BPTree bpTree = BPT_GetTree();
     Addr root = bpTree.RootNode;
@@ -567,11 +567,12 @@ int BufferedTable::BPT_Delete(Key key)
     }
     if (IS_OFB_ADDR(res))
     {
-        num = DeleteOFB(res);
+        num = DeleteOFB(res, freeData);
     }
     else
     {
-        BPT_FreeBlock(DATA_FILE, res);
+        if (freeData)
+            BPT_FreeBlock(DATA_FILE, res);
         num = 1;
     }
     deleteFromNode(key);
@@ -700,28 +701,31 @@ void BufferedTable::insertToNode(Key key, Addr addr)
 /**
 插入记录
 */
-bool BufferedTable::BPT_Insert(Record *rec)
+bool BufferedTable::BPT_Insert(Key key, Addr addr, bool unique)
 {
     uint i;
     BPTree bpTree = BPT_GetTree();
     Addr root = bpTree.RootNode;
-    Addr res = seekInNode(true, root, rec->key);
-    Addr p = BPT_AllocBlock(DATA_FILE);
-    this->Write(p, rec->fields, RecSize);
+    Addr res = seekInNode(true, root, key);
     if (res >= 0)
     {//key已存在
+        if (unique)
+        {
+            BPT_ClearStack();
+            return false;
+        }
         OFBlock *block = new OFBlock();
         if (IS_OFB_ADDR(res))
         {
             this->Read(res, block, sizeof(OFBlock));
-            InsertToOFB(block, p);
+            InsertToOFB(block, addr);
             this->Write(res, block, sizeof(OFBlock));
         }
         else
         {
             Addr blockAddr = this->Alloc(OFB_SEGID, sizeof(OFBlock));
             InsertToOFB(block, res);
-            InsertToOFB(block, p);
+            InsertToOFB(block, addr);
             BPT_Node *leafNode = BPT_StackGetTop();
             for (i = 0; i < leafNode->KeyNum; ++i)
             {
@@ -738,7 +742,7 @@ bool BufferedTable::BPT_Insert(Record *rec)
     }
     else
     {
-        insertToNode(rec->key, p);
+        insertToNode(key, addr);
         BPT_ClearStack();
     }
     return true;
@@ -1103,30 +1107,33 @@ void BufferedTable::DoInsert(Key key, Addr addr, Addr entry, Hash_Bucket *bucket
     }
 }
 
-bool BufferedTable::Hash_Insert(Record *rec)
+bool BufferedTable::Hash_Insert(Key key, Addr addr, bool unique)
 {
     int i;
-    Addr entry = Hash_GetBuckEntry(rec->key), res;
+    Addr entry = Hash_GetBuckEntry(key), res;
     Hash_Bucket *bucket = new Hash_Bucket();
     this->Read(entry, bucket, sizeof(Hash_Bucket));
-    Addr p = Hash_AllocRecord();
-    this->Write(p, rec->fields, RecSize);
-    i = Hash_BinSearch(rec->key, bucket->Keys, bucket->KeyNum);
+    i = Hash_BinSearch(key, bucket->Keys, bucket->KeyNum);
     if (i >= 0)
     {
+        if (unique)
+        {
+            delete bucket;
+            return false;
+        }
         res = bucket->Addrs[i];
         OFBlock *block = new OFBlock();
         if (IS_OFB_ADDR(res))
         {
             this->Read(res, block, sizeof(OFBlock));
-            InsertToOFB(block, p);
+            InsertToOFB(block, addr);
             this->Write(res, block, sizeof(OFBlock));
         }
         else
         {
             Addr blockAddr = this->Alloc(OFB_SEGID, sizeof(OFBlock));
             InsertToOFB(block, res);
-            InsertToOFB(block, p);
+            InsertToOFB(block, addr);
             bucket->Addrs[i] = blockAddr;
             this->Write(blockAddr, block, sizeof(OFBlock));
             this->Write(entry, bucket, sizeof(Hash_Bucket));
@@ -1135,7 +1142,7 @@ bool BufferedTable::Hash_Insert(Record *rec)
     }
     else
     {
-        DoInsert(rec->key, p, entry, bucket);
+        DoInsert(key, addr, entry, bucket);
     }
     delete bucket;
     return true;
@@ -1147,7 +1154,7 @@ hash: delete.c
 **************************************************************
 */
 //删除
-int BufferedTable::Hash_Delete(Key key)
+int BufferedTable::Hash_Delete(Key key, bool freeData)
 {
     //查找key值所在桶,读取桶的内容到bucket
     Hash_Bucket *bucket = new Hash_Bucket();
@@ -1163,11 +1170,12 @@ int BufferedTable::Hash_Delete(Key key)
     int num;
     if (IS_OFB_ADDR(addr))
     {
-        num = DeleteOFB(addr);
+        num = DeleteOFB(addr, freeData);
     }
     else
     {
-        this->Free(addr, RecSize);
+        if (freeData)
+            this->Free(addr, RecSize);
         num = 1;
     }
     uint k;
@@ -1301,18 +1309,19 @@ void BufferedTable::InsertToOFB(OFBlock *block, Addr recAddr)
 }
 
 //返回值为负表示删除失败
-int BufferedTable::DeleteOFB(Addr ofbAddr)
+int BufferedTable::DeleteOFB(Addr ofbAddr, bool freeData)
 {
     uint i, sum = 0;
     OFBlock *block = new OFBlock();
     this->StorageManager.Read(ofbAddr, block, sizeof(OFBlock));
     if (block->Next != -1)
     {
-        sum = DeleteOFB(block->Next);
+        sum = DeleteOFB(block->Next, freeData);
     }
     for (i = 0; i < block->RecNum; ++i)
     {
-        this->StorageManager.Free(block->RecordAddrs[i], RecSize);
+        if (freeData)
+            this->StorageManager.Free(block->RecordAddrs[i], RecSize);
         sum++;
     }
     this->StorageManager.Free(ofbAddr, sizeof(OFBlock));
@@ -1431,4 +1440,24 @@ int BufferedTable::IndexScan_Next(char *fields)
         this->IScanNodeId++;
     }
     return RecSize;
+}
+
+uint64 BufferedTable::GetDataBlockNum()
+{
+    return this->StorageManager.GetDataPageNum();
+}
+
+Addr BufferedTable::AllocRec()
+{
+    return this->Alloc(0, this->RecSize);
+}
+
+void BufferedTable::WriteRec(char *rec, Addr addr)
+{
+    this->Write(addr, rec, RecSize);
+}
+
+void BufferedTable::FreeRec(Addr addr)
+{
+    this->Free(addr, RecSize);
 }

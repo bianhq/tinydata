@@ -44,3 +44,346 @@
 
 1355639265 source:/media/BHQ/course/db/prog/exp5/exp5/util.cpp
 
+1356750249 source:/home/hadoop/Desktop/exp5/dict.cpp
+	"dict.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1356750249 /home/hadoop/Desktop/exp5/dict.h
+	"util.h"
+	<stdio.h>
+
+1357812452 /home/hadoop/Desktop/exp5/util.h
+
+1357787158 source:/home/hadoop/Desktop/exp5/main.cpp
+	<iostream>
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	"sqlexe.h"
+	"pool.h"
+
+1356769409 /home/hadoop/Desktop/exp5/table.h
+	<stdio.h>
+	"util.h"
+	"storage.h"
+	"dict.h"
+
+1357827241 /home/hadoop/Desktop/exp5/storage.h
+	"util.h"
+	<stdio.h>
+
+1357701509 source:/home/hadoop/Desktop/exp5/storage.cpp
+	"storage.h"
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+
+1357728490 source:/home/hadoop/Desktop/exp5/table.cpp
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1356675772 source:/home/hadoop/Desktop/exp5/util.cpp
+
+1357812452 /home/hadoop/Desktop/exp5/sqlexe.h
+	"util.h"
+
+1356182916 source:/home/hadoop/Desktop/exp5/sql.cpp
+
+1356321694 source:/home/hadoop/Desktop/exp5/lex.yy.c
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"y.tab.h"
+	<unistd.h>
+
+1357834958 /home/hadoop/Desktop/exp5/y.tab.h
+
+1356321874 source:/home/hadoop/Desktop/exp5/y.tab.c
+	<stdio.h>
+	<string.h>
+	<time.h>
+	"sqlexe.h"
+	<stddef.h>
+	<libintl.h>
+	<alloca.h>
+	<malloc.h>
+	<stdlib.h>
+	<stdlib.h>
+	<stdio.h>
+
+1357832852 source:/home/hadoop/Desktop/exp5/sqlexe.cpp
+	"sqlexe.h"
+	"pool.h"
+	"spj.h"
+	<iostream>
+	<iomanip>
+	<string.h>
+	<stdlib.h>
+
+1357834958 source:/home/hadoop/Desktop/exp5/y.tab.cpp
+	<stdio.h>
+	<string.h>
+	<time.h>
+	"sqlexe.h"
+	<stddef.h>
+	<libintl.h>
+	<alloca.h>
+	<malloc.h>
+	<stdlib.h>
+	<stdlib.h>
+	<stdio.h>
+
+1356322477 source:/home/hadoop/Desktop/exp5/sqlexe.c
+	"sqlexe.h"
+	<stdio.h>
+
+1357834392 source:/home/hadoop/Desktop/exp5/lex.yy.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"y.tab.h"
+	<unistd.h>
+
+1357832588 /home/hadoop/Desktop/exp5/spj.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"sqlexe.h"
+	"pool.h"
+
+1356769409 source:/home/hadoop/Desktop/exp5/pool.cpp
+	"pool.h"
+
+1356766748 /home/hadoop/Desktop/exp5/pool.h
+	"dict.h"
+	"table.h"
+	<string>
+	<map>
+
+1357833064 source:/home/hadoop/Desktop/exp5/spj.cpp
+	"spj.h"
+	<iostream>
+	<string.h>
+
+1356750249 source:/home/hadoop/Desktop/exp5_src/dict.cpp
+	"dict.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1356750249 /home/hadoop/Desktop/exp5_src/dict.h
+	"util.h"
+	<stdio.h>
+
+1357812452 /home/hadoop/Desktop/exp5_src/util.h
+
+1357834392 source:/home/hadoop/Desktop/exp5_src/lex.yy.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"y.tab.h"
+	<unistd.h>
+
+1357834958 /home/hadoop/Desktop/exp5_src/y.tab.h
+
+1357787158 source:/home/hadoop/Desktop/exp5_src/main.cpp
+	<iostream>
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	"sqlexe.h"
+	"pool.h"
+
+1357812452 /home/hadoop/Desktop/exp5_src/sqlexe.h
+	"util.h"
+
+1356766748 /home/hadoop/Desktop/exp5_src/pool.h
+	"dict.h"
+	"table.h"
+	<string>
+	<map>
+
+1356769409 /home/hadoop/Desktop/exp5_src/table.h
+	<stdio.h>
+	"util.h"
+	"storage.h"
+	"dict.h"
+
+1357827241 /home/hadoop/Desktop/exp5_src/storage.h
+	"util.h"
+	<stdio.h>
+
+1356769409 source:/home/hadoop/Desktop/exp5_src/pool.cpp
+	"pool.h"
+
+1357833064 source:/home/hadoop/Desktop/exp5_src/spj.cpp
+	"spj.h"
+	<iostream>
+	<string.h>
+
+1357832588 /home/hadoop/Desktop/exp5_src/spj.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"sqlexe.h"
+	"pool.h"
+
+1357835396 source:/home/hadoop/Desktop/exp5_src/sqlexe.cpp
+	"sqlexe.h"
+	"pool.h"
+	"spj.h"
+	<iostream>
+	<iomanip>
+	<string.h>
+	<stdlib.h>
+
+1357701509 source:/home/hadoop/Desktop/exp5_src/storage.cpp
+	"storage.h"
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+
+1357728490 source:/home/hadoop/Desktop/exp5_src/table.cpp
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1356675772 source:/home/hadoop/Desktop/exp5_src/util.cpp
+
+1357834958 source:/home/hadoop/Desktop/exp5_src/y.tab.cpp
+	<stdio.h>
+	<string.h>
+	<time.h>
+	"sqlexe.h"
+	<stddef.h>
+	<libintl.h>
+	<alloca.h>
+	<malloc.h>
+	<stdlib.h>
+	<stdlib.h>
+	<stdio.h>
+
+1356750248 source:c:\users\hp\desktop\exp5_src\dict.cpp
+	"dict.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1356750248 c:\users\hp\desktop\exp5_src\dict.h
+	"util.h"
+	<stdio.h>
+
+1357812452 c:\users\hp\desktop\exp5_src\util.h
+
+1357834392 source:c:\users\hp\desktop\exp5_src\lex.yy.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"y.tab.h"
+	<unistd.h>
+
+1357834958 c:\users\hp\desktop\exp5_src\y.tab.h
+
+1357787158 source:c:\users\hp\desktop\exp5_src\main.cpp
+	<iostream>
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	"sqlexe.h"
+	"pool.h"
+
+1357812452 c:\users\hp\desktop\exp5_src\sqlexe.h
+	"util.h"
+
+1356766748 c:\users\hp\desktop\exp5_src\pool.h
+	"dict.h"
+	"table.h"
+	<string>
+	<map>
+
+1356769408 c:\users\hp\desktop\exp5_src\table.h
+	<stdio.h>
+	"util.h"
+	"storage.h"
+	"dict.h"
+
+1357827240 c:\users\hp\desktop\exp5_src\storage.h
+	"util.h"
+	<stdio.h>
+
+1356769408 source:c:\users\hp\desktop\exp5_src\pool.cpp
+	"pool.h"
+
+1357833064 source:c:\users\hp\desktop\exp5_src\spj.cpp
+	"spj.h"
+	<iostream>
+	<string.h>
+
+1357832588 c:\users\hp\desktop\exp5_src\spj.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"sqlexe.h"
+	"pool.h"
+
+1357849068 source:c:\users\hp\desktop\exp5_src\sqlexe.cpp
+	"sqlexe.h"
+	"pool.h"
+	"spj.h"
+	<iostream>
+	<iomanip>
+	<string.h>
+	<stdlib.h>
+
+1357701508 source:c:\users\hp\desktop\exp5_src\storage.cpp
+	"storage.h"
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+
+1357728490 source:c:\users\hp\desktop\exp5_src\table.cpp
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1356675772 source:c:\users\hp\desktop\exp5_src\util.cpp
+
+1357834958 source:c:\users\hp\desktop\exp5_src\y.tab.cpp
+	<stdio.h>
+	<string.h>
+	<time.h>
+	"sqlexe.h"
+	<stddef.h>
+	<libintl.h>
+	<alloca.h>
+	<malloc.h>
+	<stdlib.h>
+	<stdlib.h>
+	<stdio.h>
+

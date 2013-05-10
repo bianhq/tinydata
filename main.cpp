@@ -1,17 +1,15 @@
 #include <iostream>
-#include "table.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "storage.h"
-#include "dict.h"
+#include "sqlexe.h"
+#include "pool.h"
 using namespace std;
 
 //下面3个main函数：
 //第2个的测试文件是3.in或者4.in或者5.in
 //第2\3个的测试文件是scan.txt
-//所有测试文件都应该在test目录下，Scan.txt太大了，请自己考过来
-#define EXE 3
+#define EXE 4
 
 #if EXE==0
 int main()
@@ -20,7 +18,7 @@ int main()
     Dictionary dict("db");
     dict.Create();
     dict.Open();
-    TableInfo info("123", "123_data", "123_meta", 1, new FieldInfo[2]);
+    TableInfo info("123", "123_data", "123_meta", 1, new FieldInfo[1]);
     info.Fields[0].SetInfo("Id", true, INT, sizeof(Key));
     dict.AddTable(&info);
     dict.Close();
@@ -243,10 +241,11 @@ int main()
     //创建表
     table->Open(true);
     //创建B+树索引
-    table->BPT_Init(true);
+    table->Hash_Init(true);
     char cmd[150];
-    Record rec;
-    rec.fields = new char[96];
+    char *fields = new char[95];
+    Key key;
+    Addr addr;
     uint i, sum = 0;
     FILE *in = fopen("test/Scan.txt", "r");
     FILE *out = fopen("test/Scan.out.txt", "w");
@@ -254,31 +253,91 @@ int main()
     {
         for (i = 0; cmd[i] != ' '; ++i);
         cmd[i] = '\0';
-        rec.key = atoi(cmd);
+        key = atoi(cmd);
         for (i = i+2; cmd[i] == ' '; ++i);
-        memcpy(rec.fields, &rec.key, sizeof(Key));
-        strncpy(rec.fields+sizeof(Key), cmd+i, 8);
-        strncpy(rec.fields+sizeof(Key)+8, cmd+i+8+6, 12);
-        strncpy(rec.fields+sizeof(Key)+8+12, cmd+i+8+6+12+6, 20);
-        strncpy(rec.fields+sizeof(Key)+8+12+20, cmd+i+8+6+12+6+20+6, 48);
-        rec.fields[sizeof(Key)+88] = '\0';
-        if (table->BPT_Insert(&rec))
+        memcpy(fields, &key, sizeof(Key));
+        strncpy(fields+sizeof(Key), cmd+i, 8);
+        strncpy(fields+sizeof(Key)+8, cmd+i+8+6, 12);
+        strncpy(fields+sizeof(Key)+8+12, cmd+i+8+6+12+6, 20);
+        strncpy(fields+sizeof(Key)+8+12+20, cmd+i+8+6+12+6+20+6, 50);
+        fields[sizeof(Key)+90] = '\0';
+        addr = table->AllocRec();
+        table->WriteRec(fields, addr);
+        if (table->Hash_Insert(key, addr, false))
         {
             sum ++;
+
         }
     }
     cout << "total: "<< sum << " lines.\n";
 
-    table->IndexScan_Init(0, 1000000);
-    char fields[96];
-    while(table->IndexScan_Next(fields)>0)
+    //table->IndexScan_Init(0, 1000000);
+    //while(table->IndexScan_Next(fields)>0)
     {
-        fprintf(out, "%d\t%s\n", *((Key *)fields), fields+4);
+        //fprintf(out, "%d\t%s\n", *((Key *)fields), fields+4);
     }
+
+    //FILE *out = fopen("1234", "w");
+    /*    uint num = 0;
+        ResultSet list;
+
+        for (i = 0; i < 10000000; ++i)
+        {
+            table->Hash_Seek(i, &list);
+            {
+                num += list.RecNum;
+
+                if (list.RecNum)
+                {*(list[0]+93)='\0';
+                    fprintf(out, "%d\t%s\n", *((Key*)list[0]), list[0]+4);
+                }
+
+            }
+            list.Clear();
+        }
+    */
+
+    table->TabScan_Init();
+    char field111[96];
+
+    int nnn = GetRecordSize(&info);
+    while(table->TabScan_Next(field111) == nnn)
+    {
+        field111[94]='\0';
+        fprintf(out, "%d\t%s\n", *((Key *)field111), field111+4);
+        fflush(out);
+    }
+    //fprintf(out, "%d\n", num);
+
+
     table->Close();
     fclose(in);
     fclose(out);
+    delete []fields;
     delete table;
+    return 0;
+}
+#endif
+
+#if EXE==4
+extern int parserInit();
+extern int yyparse();
+int main()
+{
+    cout << "Welcome to Tiny Data !"
+     << "\n\nVersion 0.0.1. \nCopyright (C) 2012-2013. Info, RUC. All rights reserved.\n\n";
+    cout << "Tiny Data> ";
+    while(true)
+    {
+        parserInit();
+        if (yyparse() == 10)
+        {
+            break;
+        }
+    }
+    g_DictPool.Close();
+    g_TablePool.Close();
+    cout << "Byebye." << endl;
     return 0;
 }
 #endif
